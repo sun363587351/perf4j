@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.perf4j</groupId>
+    <groupId>com.cloudyle.paasplus.perf4j</groupId>
     <artifactId>perf4j</artifactId>
-    <version>0.9.17-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <version>0.9.17</version>
+    <packaging>bundle</packaging>
 
-    <name>Perf4J</name>
+    <name>Perf4J OSGi Bundle</name>
     <description>Performance statistics logging and monitoring toolkit extension to log4j, logback and the java.util.logging framework.</description>
     <url>http://www.perf4j.org</url>
     <inceptionYear>2008</inceptionYear>
@@ -21,8 +21,8 @@
     </licenses>
 
     <organization>
-        <name>perf4j.org</name>
-        <url>http://www.perf4j.org</url>
+        <name>Cloudyle</name>
+        <url>http://www.cloudyle.com</url>
     </organization>
 
     <ciManagement>
@@ -227,8 +227,8 @@
                             </dependency>
                         </dependencies>
                         <configuration>
-                                <source>1.5</source>
-                                <target>1.5</target>
+                                <source>1.7</source>
+                                <target>1.7</target>
                         </configuration>
                         <executions>
                             <execution>
@@ -438,6 +438,36 @@
                 </executions>
             </plugin>
 
+
+		   <plugin>
+		        <groupId>org.apache.felix</groupId>
+		        <artifactId>maven-bundle-plugin</artifactId>
+		        <version>2.5.3</version>
+		        <extensions>true</extensions>
+		        <configuration>
+		          <instructions>
+		            <!--  <Bundle-Activator>com.cloudyle.paasplus.services.report.impl.Activator</Bundle-Activator> -->
+		            
+		            <Import-Package>org.slf4j;provider=paxlogging,
+		            *;resolution:=optional,</Import-Package>
+		            <Export-Package>		              
+		                 !org.perf4j.log4j.*,
+                         !org.perf4j.javalog.*,
+                         !org.perf4j.commonslog.*,
+                         !org.perf4j.logback.*,                                      
+                          org.perf4j.*
+		           </Export-Package>
+		           <Private-Package>		              
+		                 !org.perf4j.log4j.*,
+                         !org.perf4j.javalog.*,
+                         !org.perf4j.commonslog.*,
+                         !org.perf4j.logback.*       
+  
+		           </Private-Package>
+		              
+		          </instructions>
+		        </configuration>
+		      </plugin> 
             <!-- Generate a jar containing the source files when deploying -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -458,34 +488,7 @@
             </plugin>
 
             <!-- Tell maven to generate a version.properties files from SVN -->
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-
-                    <execution>
-                        <id>build-versions-file</id>
-                        <phase>compile</phase>
-                        <inherited>false</inherited>
-                        <configuration>
-                            <tasks>
-                                <mkdir dir="${project.build.directory}" />
-                                <exec executable="${git.executable}" output="${project.build.directory}/version.properties">
-                                    <arg value="log" />
-                                    <arg value="-1" />
-                                    <arg value="--pretty=perf4j.revision=%H" />
-                                </exec>
-                                <echo file="${project.build.directory}/version.properties" append="true">
-                                    perf4j.version=${project.version}
-                                </echo>
-                                <fixcrlf srcdir="${project.build.directory}" eol="lf" includes="version.properties" />
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+       
 
             <!--
               Tell the Maven jar plugin to generate multiple jars: one with all the files, then ones that JUST contain
@@ -508,7 +511,7 @@
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                            <mainClass>org.perf4j.LogParser</mainClass>
+                            <mainClass>org.perf4j.LogParser</mainClass> 
                         </manifest>
                     </archive>
                 </configuration>
