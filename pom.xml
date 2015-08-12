@@ -169,18 +169,18 @@
     </repositories>
 
     <pluginRepositories>
-        <pluginRepository>
+       <!-- <pluginRepository>
             <id>Codehaus</id>
             <url>http://repository.codehaus.org/</url>
-        </pluginRepository>
+        </pluginRepository>-->
         <pluginRepository>
             <id>Codehaus Mojo</id>
             <url>http://repository.codehaus.org/org/codehaus/mojo/</url>
         </pluginRepository>
-        <pluginRepository>
+    <!--    <pluginRepository>
             <id>Codehaus Snapshots</id>
             <url>http://snapshots.repository.codehaus.org/</url>
-        </pluginRepository>
+        </pluginRepository>-->
         <pluginRepository>
             <id>Maven2</id>
             <url>http://repo1.maven.org/maven2/</url>
